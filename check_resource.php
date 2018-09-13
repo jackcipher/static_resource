@@ -70,11 +70,9 @@ class gitOperation {
             $this->work_dir = $work_dir;
         }
         chdir($this->work_dir);
-        echo getcwd();
     }
 
     public function gitStatus() {
-        echo getcwd();
         $cmd = "sudo git status";
         exec($cmd, $status);
         PrettyOutput::sep(50);
