@@ -63,16 +63,17 @@ class AutoPushStaticResource {
         $this->sepOutput();
     }
 
-    private function stopConcurency() {
+    private function stopConcurrency() {
         $cmd = "ps aux|grep check_resource|grep -v grep|wc -l";
         exec($cmd, $count);
         $count = intval($count);
         if($count>1) {
-            die('concurency conflict');
+            die('concurrency conflict');
         }
     }
 
     public function main() {
+        $this->stopConcurrency();
         sleep(10);
         chdir($this->path);
         $this->gitAddAll();
