@@ -12,6 +12,9 @@
 </pre>
                                                                      
 
+### Background
 
-## static_resource
+Github.com supports using repo as static resource hostings.
+
+### static_resource
 a repo for hosting staitc resource including imgs,code snippet,kindle books etc.
