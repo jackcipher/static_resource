@@ -5,6 +5,7 @@ class AutoPushStaticResource {
 
     //检测git状态 true继续 false 退出
     private function checkGitStatus() {
+        echo getcwd();
         $cmd = "git status";
         exec($cmd, $status);
         $no_need_run =  ($status[4] == "nothing to commit, working tree clean");
@@ -34,6 +35,7 @@ class AutoPushStaticResource {
     }
 
     public function main() {
+        chdir('/usr/local/github/static_resource');
         $this->gitAddAll();
         $this->checkGitStatus();
         $this->gitPull();
