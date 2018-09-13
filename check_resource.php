@@ -12,9 +12,10 @@ class AutoPushStaticResource {
 
     //检测git状态 true继续 false 退出
     private function checkGitStatus() {
-        echo getcwd();
+        echo getcwd() .PHP_EOL;
         $cmd = "git status";
         exec($cmd, $status);
+        print_r($status);
         $no_need_run =  ($status[4] == "nothing to commit, working tree clean");
         if ($no_need_run) {
             echo 'working tree clean' . PHP_EOL;
@@ -23,19 +24,19 @@ class AutoPushStaticResource {
     }
 
     private function gitPull() {
-        echo getcwd();
+        echo getcwd() .PHP_EOL;
         $cmd = "git pull origin master";
         exec($cmd, $status);
     }
 
     private function gitAddAll() {
-        echo getcwd();
+        echo getcwd() .PHP_EOL;
         $cmd = "git add -A";
         exec($cmd, $status);
     }
 
     private function gitCommitAndPush() {
-        echo getcwd();
+        echo getcwd() .PHP_EOL;
         $commit_id = md5(time());
         $cmd = "git commit -m '{$commit_id}'";
         exec($cmd, $status1);
