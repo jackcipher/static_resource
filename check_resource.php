@@ -35,6 +35,7 @@ class AutoPushStaticResource {
     }
 
     private function gitCommitAndPush() {
+        echo getcwd();
         $commit_id = md5(time());
         $cmd = "git commit -m '{$commit_id}'";
         exec($cmd, $status1);
