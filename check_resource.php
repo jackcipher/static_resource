@@ -64,6 +64,7 @@ class AutoPushStaticResource {
     }
 
     public function main() {
+        sleep(10);
         chdir($this->path);
         $this->gitAddAll();
         $this->checkGitStatus();
