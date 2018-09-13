@@ -73,7 +73,7 @@ class gitOperation {
     }
 
     public function gitStatus() {
-        $cmd = "sudo git status";
+        $cmd = "git status";
         exec($cmd, $status);
         PrettyOutput::sep(50);
         PrettyOutput::raw($status);
@@ -83,21 +83,21 @@ class gitOperation {
         if (empty($message)) {
             $message = md5(time());
         }
-        $cmd = "sudo git commit -m {$message}";
+        $cmd = "git commit -m {$message}";
         exec($cmd, $status);
         PrettyOutput::sep(50);
         PrettyOutput::raw($status);
     }
 
     public function gitAddAll() {
-        $cmd = "sudo git add -A";
+        $cmd = "git add -A";
         exec($cmd, $status);
         PrettyOutput::sep(50);
         PrettyOutput::raw($status);
     }
 
     public function gitPush() {
-        $cmd = "sudo git push origin master";
+        $cmd = "git push origin master";
         exec($cmd, $status);
         PrettyOutput::sep(50);
         PrettyOutput::raw($status);
