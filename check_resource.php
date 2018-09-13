@@ -67,6 +67,7 @@ class AutoPushStaticResource {
         $cmd = "ps aux|grep check_resource|grep -v grep|wc -l";
         exec($cmd, $count);
         $count = intval($count);
+        echo $count;
         if($count>1) {
             die('concurrency conflict');
         }
