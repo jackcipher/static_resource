@@ -60,7 +60,7 @@ class AutoPushStaticResource {
         $cmd = "git push origin master";
         exec($cmd, $status);
         $this->rawOutput($status);
-        $this->setOutput();
+        $this->sepOutput();
     }
 
     public function main() {
