@@ -24,6 +24,9 @@ class ProcessOperation {
     const MAX_CONCURRENCY = 1;
 
     static function checkConcurrency() {
+        $cmd = "ps aux|grep check_resource|grep -v grep";
+	exec($cmd, $status);
+	prettyOutput::raw($status);
         $cmd = "ps aux|grep check_resource|grep -v grep|wc -l";
         exec($cmd, $count);
         $count = intval($count[0]);
