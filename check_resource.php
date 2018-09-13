@@ -45,7 +45,7 @@ class AutoPushStaticResource {
     }
 
     public function main() {
-        chdir('/usr/local/github/static_resource');
+        chdir($this->path);
         $this->gitAddAll();
         $this->checkGitStatus();
         $this->gitPull();
