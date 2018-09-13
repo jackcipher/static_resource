@@ -43,47 +43,6 @@ class AutoPushStaticResource {
         $this->path = $path;
     }
 
-    //检测git状态 true继续 false 退出
-    private function checkGitStatus() {
-        echo getcwd() .PHP_EOL;
-        $cmd = "git status";
-        exec($cmd, $status);
-        PrettyOutput::raw($status);
-        $no_need_run =  ($status[4] == "nothing to commit, working tree clean");
-        if ($no_need_run) {
-            echo 'working tree clean' . PHP_EOL;
-            exit();
-        }
-    }
-
-    private function gitPull() {
-        echo getcwd() .PHP_EOL;
-        $cmd = "git pull origin master";
-        exec($cmd, $status);
-        PrettyOutput::raw($status);
-    }
-
-    private function gitAddAll() {
-        echo getcwd() .PHP_EOL;
-        $cmd = "git add -A";
-        exec($cmd, $status);
-        PrettyOutput::raw($status);
-    }
-
-    private function gitCommitAndPush() {
-        PrettyOutput::sep();
-        $commit_id = md5(time());
-        $cmd = "git commit -m '{$commit_id}'";
-        exec($cmd, $status);
-        PrettyOutput::raw($status);
-        $cmd = "git push origin master";
-        exec($cmd, $status);
-        PrettyOutput::raw($status);
-        PrettyOutput::sep();
-    }
-
-
-
     public function main() {
         processOperation::checkConcurrency();
         $git_operation = new gitOperation($this->path);
@@ -91,15 +50,6 @@ class AutoPushStaticResource {
         $git_operation->gitAddAll();
         $git_operation->gitCommit();
         $git_operation->gitPush();
-        sleep(10);
-        die('quit normal');
-        sleep(10);
-        chdir($this->path);
-        $this->gitAddAll();
-        $this->checkGitStatus();
-        $this->gitPull();
-        $this->gitAddAll();
-        $this->gitCommitAndPush();
     }
 
 
@@ -159,6 +109,3 @@ class gitOperation {
 
 $obj = new AutoPushStaticResource;
 $obj->main();
-
-//$git_op = new GitOperation;
-//$git_op->gitStatus();
