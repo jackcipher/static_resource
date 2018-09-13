@@ -48,7 +48,7 @@ class AutoPushStaticResource {
         $commit_id = md5(time());
         $cmd = "git commit -m '{$commit_id}' && git push origin master";
         exec($cmd, $status);
-        print_r($status);
+        $this->rawOutput($status);
     }
 
     public function main() {
