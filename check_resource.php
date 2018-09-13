@@ -19,6 +19,21 @@ class PrettyOutput {
     }
 }
 
+class ProcessOperation {
+
+    const MAX_CONCURRENCY = 1;
+
+    static function checkConcurrency() {
+        $cmd = "ps aux|grep check_resource|grep -v grep|wc -l";
+        exec($cmd, $count);
+        $count = intval($count[0]);
+        if ($count > self::MAX_CONCURRENCY) {
+            die(PHP_EOL.'concurrency conflict'.PHP_EOL);
+        }
+    }
+
+}
+
 class AutoPushStaticResource {
 
     private $path;
@@ -28,26 +43,12 @@ class AutoPushStaticResource {
         $this->path = $path;
     }
 
-    private function sepOutput() {
-        echo PHP_EOL;
-        for ($i=0; $i<10; ++$i) {
-            echo '-';
-        }
-        echo PHP_EOL;
-    }
-
-    private function rawOutput($resultArr=[]) {
-        foreach ($resultArr as $str) {
-            echo $str.PHP_EOL;
-        }
-    }
-
     //检测git状态 true继续 false 退出
     private function checkGitStatus() {
         echo getcwd() .PHP_EOL;
         $cmd = "git status";
         exec($cmd, $status);
-        $this->rawOutput($status);
+        PrettyOutput::raw($status);
         $no_need_run =  ($status[4] == "nothing to commit, working tree clean");
         if ($no_need_run) {
             echo 'working tree clean' . PHP_EOL;
@@ -59,39 +60,37 @@ class AutoPushStaticResource {
         echo getcwd() .PHP_EOL;
         $cmd = "git pull origin master";
         exec($cmd, $status);
-        $this->rawOutput($status);
+        PrettyOutput::raw($status);
     }
 
     private function gitAddAll() {
         echo getcwd() .PHP_EOL;
         $cmd = "git add -A";
         exec($cmd, $status);
-        $this->rawOutput($status);
+        PrettyOutput::raw($status);
     }
 
     private function gitCommitAndPush() {
-        $this->sepOutput();
+        PrettyOutput::sep();
         $commit_id = md5(time());
         $cmd = "git commit -m '{$commit_id}'";
         exec($cmd, $status);
-        $this->rawOutput($status);
+        PrettyOutput::raw($status);
         $cmd = "git push origin master";
         exec($cmd, $status);
-        $this->rawOutput($status);
-        $this->sepOutput();
+        PrettyOutput::raw($status);
+        PrettyOutput::sep();
     }
 
-    private function stopConcurrency() {
-        $cmd = "ps aux|grep check_resource|grep -v grep|wc -l";
-        exec($cmd, $count);
-        $count = intval($count[0]);
-        if($count>1) {
-            die(PHP_EOL.'concurrency conflict'.PHP_EOL);
-        }
-    }
+
 
     public function main() {
-        $this->stopConcurrency();
+        processOperation::checkConcurrency();
+        $git_operation = new gitOperation($this->path);
+        $git_operation->gitStatus();
+        $git_operation->gitAddAll();
+        $git_operation->gitCommit();
+        $git_operation->gitPush();
         sleep(10);
         die('quit normal');
         sleep(10);
@@ -121,6 +120,7 @@ class gitOperation {
             $this->work_dir = $work_dir;
         }
         chdir($this->work_dir);
+        echo getcwd();
     }
 
     public function gitStatus() {
@@ -129,12 +129,36 @@ class gitOperation {
         exec($cmd, $status);
         PrettyOutput::sep(50);
         PrettyOutput::raw($status);
-    } 
+    }
+
+    public function gitCommit($message=null) {
+        if (empty($message)) {
+            $message = md5(time());
+        }
+        $cmd = "git commit -m {$message}";
+        exec($cmd, $status);
+        PrettyOutput::sep(50);
+        PrettyOutput::raw($status);
+    }
+
+    public function gitAddAll() {
+        $cmd = "git add -A";
+        exec($cmd, $status);
+        PrettyOutput::sep(50);
+        PrettyOutput::raw($status);
+    }
+
+    public function gitPush() {
+        $cmd = "git push origin master";
+        exec($cmd, $status);
+        PrettyOutput::sep(50);
+        PrettyOutput::raw($status);
+    }
 }
 
 
-//$obj = new AutoPushStaticResource;
-//$obj->main();
+$obj = new AutoPushStaticResource;
+$obj->main();
 
-$git_op = new GitOperation;
-$git_op->gitStatus();
+//$git_op = new GitOperation;
+//$git_op->gitStatus();
