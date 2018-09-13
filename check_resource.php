@@ -10,6 +10,14 @@ class AutoPushStaticResource {
         $this->path = $path;
     }
 
+    private function sepOutput() {
+        echo PHP_EOL;
+        for ($i=0; $i<10; ++$i) {
+            echo '-';
+        }
+        echo PHP_EOL;
+    }
+
     private function rawOutput($resultArr=[]) {
         foreach ($resultArr as $str) {
             echo $str.PHP_EOL;
@@ -44,7 +52,7 @@ class AutoPushStaticResource {
     }
 
     private function gitCommitAndPush() {
-        echo "commitandpush:" . getcwd() .PHP_EOL;
+        $this->sepOutput();
         $commit_id = md5(time());
         $cmd = "git commit -m '{$commit_id}'";
         exec($cmd, $status);
@@ -52,6 +60,7 @@ class AutoPushStaticResource {
         $cmd = "git push origin master";
         exec($cmd, $status);
         $this->rawOutput($status);
+        $this->setOutput();
     }
 
     public function main() {
