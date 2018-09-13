@@ -46,7 +46,10 @@ class AutoPushStaticResource {
     private function gitCommitAndPush() {
         echo "commitandpush:" . getcwd() .PHP_EOL;
         $commit_id = md5(time());
-        $cmd = "git commit -m '{$commit_id}' && git push origin master";
+        $cmd = "git commit -m '{$commit_id}'";
+        exec($cmd, $status);
+        $this->rawOutput($status);
+        $cmd = "git push origin master";
         exec($cmd, $status);
         $this->rawOutput($status);
     }
