@@ -63,6 +63,15 @@ class AutoPushStaticResource {
         $this->sepOutput();
     }
 
+    private function stopConcurency() {
+        $cmd = "ps aux|grep check_resource|grep -v grep|wc -l";
+        exec($cmd, $count);
+        $count = intval($count);
+        if($count>1) {
+            die('concurency conflict');
+        }
+    }
+
     public function main() {
         sleep(10);
         chdir($this->path);
