@@ -3,6 +3,13 @@
 
 class AutoPushStaticResource {
 
+    private $path;
+
+    function __construct($path = '/usr/local/github/static_resource')
+    {
+        $this->path = $path;
+    }
+
     //检测git状态 true继续 false 退出
     private function checkGitStatus() {
         echo getcwd();
@@ -16,11 +23,13 @@ class AutoPushStaticResource {
     }
 
     private function gitPull() {
+        echo getcwd();
         $cmd = "git pull origin master";
         exec($cmd, $status);
     }
 
     private function gitAddAll() {
+        echo getcwd();
         $cmd = "git add -A";
         exec($cmd, $status);
     }
