@@ -75,7 +75,7 @@ class gitOperation {
 
     public function gitStatus() {
         echo getcwd();
-        $cmd = "git status";
+        $cmd = "sudo git status";
         exec($cmd, $status);
         PrettyOutput::sep(50);
         PrettyOutput::raw($status);
@@ -85,21 +85,21 @@ class gitOperation {
         if (empty($message)) {
             $message = md5(time());
         }
-        $cmd = "git commit -m {$message}";
+        $cmd = "sudo git commit -m {$message}";
         exec($cmd, $status);
         PrettyOutput::sep(50);
         PrettyOutput::raw($status);
     }
 
     public function gitAddAll() {
-        $cmd = "git add -A";
+        $cmd = "sudo git add -A";
         exec($cmd, $status);
         PrettyOutput::sep(50);
         PrettyOutput::raw($status);
     }
 
     public function gitPush() {
-        $cmd = "git push origin master";
+        $cmd = "sudo git push origin master";
         exec($cmd, $status);
         PrettyOutput::sep(50);
         PrettyOutput::raw($status);
