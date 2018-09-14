@@ -12,10 +12,40 @@
 
 ```
                                                                      
+### 背景
 
-### Background
+>V2EX上有人曾咨询过官方，将 Github's Repo 作为静态资源托管服务，是否可行。
+>官方回复：不构成 Abuse.
 
-Github.com supports using repo as static resource hostings.
+将静态资源托管至Github仓库的想法，由来以及。一直没有动手的原因，是怕与github的操作姿势背道而驰。有了官方的回复，我就开始着手去做了。
 
-### static_resource
-a repo for hosting staitc resource including imgs,code snippet,kindle books etc.
+考虑到[我的博客](https://tiredoy.github.io)已经托管至 Github Pages， 将图片存储到其他服务也不太合
+
+
+
+起初，各路大神纷纷将博客迁移至 Github Pages， 本着向大神看齐的姿势，在某个月黑风高的夜晚，我也悄无声息地在 Github Pages 开启了[我的博客](https://tiredoy.github.io)。
+
+
+
+第一个博客使用了 Jekyll 引擎，后来转到了 Hexo. 原因嘛，大家都在用 Hexo ，作为菜鸟也是要顺应浩浩荡荡的时代潮流😂。
+
+
+
+比起在线博客系统，Hexo的写作之路并不畅快。首先你要在本地建立Hexo仓库，完成写作后，要生成博客的静态化页面，然后push到远程仓库。在写作环境不变的情况下，这种情况勉强可以接受。如果你有多台电脑，并且都有写作的场景，并且想保持所有环境的博客数据同步。那么Hexo绝对是一个梦魇。
+
+
+
+基于以上的烦恼，我做了以下几件事情：
+
+- 文章源文件与静态HTML分离
+
+
+在 Github Pages 仓库中，分出两个分支，一个叫 hexo ，用来托管文章markdown源文件；另一个叫 master， 用来托管生成后的静态页面。
+
+每次在不同的电脑环境写作时，先从hexo分支拉出最新的文章，然后在这个基础上写作，然后生成静态页面，推送到master.
+
+- travis 自动化
+
+虽然上一步能够解决数据同步的问题，但是每一次都去手动 `hexo g && hexo d`，也不是一件省心的事情。能不能每次写完一篇文章，我就愉快地关电脑呢？
+
+答案是有的，为了完成 hexo 的自动化流程。我配置了 Github Pages 的自动化流程。监听了分支的变更，当检测到hexo分支发生变化时，在travis-ci 平台，自动生成hexo静态页面，并推送至master.
