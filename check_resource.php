@@ -104,6 +104,5 @@ class gitOperation {
     }
 }
 
-
 $obj = new AutoPushStaticResource;
 $obj->main();
